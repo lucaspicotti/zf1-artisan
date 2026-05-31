@@ -2,64 +2,83 @@
 
 namespace App\Console\Commands;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-
-class MakeControllerCommand extends Command
+/**
+ * Class MakeControllerCommand
+ *
+ * Comando console responsável por automatizar a criação de novos Controllers.
+ */
+class MakeControllerCommand extends GeneratorCommand
 {
+    /**
+     * @var string O nome e a assinatura padrão do comando CLI.
+     */
     protected static $defaultName = 'make:controller';
 
+    /**
+     * Configura as opções do console e a descrição de ajuda para o comando.
+     *
+     * @return void
+     */
     protected function configure(): void
     {
+        parent::configure();
         $this
-            ->setDescription('Gera um novo controller no padrão Zend Framework 1')
-            ->addArgument('name', InputArgument::REQUIRED, 'O nome do controller (ex: Produto)');
+            ->setDescription('Gera um novo controller.')
+            ->setHelp('Este comando cria um controller com suporte a estruturas modulares.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    /**
+     * Retorna o tipo de recurso para a resolução dinâmica de diretórios.
+     *
+     * @return string
+     */
+    protected function getResourceType(): string
     {
-        $name = ucfirst($input->getArgument('name'));
-        // Evita duplicar o sufixo 'Controller' se o usuário já o informou
-        $className = preg_match('/Controller$/', $name) ? $name : $name . 'Controller';
+        return 'controllers';
+    }
 
-        $basePath = $_ENV['APPLICATION_PATH'] ?? null;
+    /**
+     * Retorna o caminho absoluto do template stub de um Controller.
+     *
+     * @return string
+     */
+    protected function getStubPath(): string
+    {
+        return __DIR__ . '/../../../stubs/controller.stub';
+    }
 
-        if (!$basePath) {
-            $output->writeln("<error>Erro: A variável APPLICATION_PATH não foi definida.</error>");
-            return Command::FAILURE;
+    /**
+     * Resolve o nome físico do arquivo do controller (garante sufixo "Controller").
+     *
+     * @param string $name
+     * @return string
+     */
+    protected function getFileName(string $name): string
+    {
+        $cleanName = ucfirst($name);
+
+        if (!str_ends_with($cleanName, 'Controller')) {
+            $cleanName .= 'Controller';
         }
 
-        // Verifica se a pasta no destino usa 'Controllers' (com C maiúsculo) ou 'controllers' (minúsculo)
-        $controllersPath = rtrim($basePath, '/') . '/controllers';
-        if (!is_dir($controllersPath) && is_dir(rtrim($basePath, '/') . '/Controllers')) {
-            $controllersPath = rtrim($basePath, '/') . '/Controllers';
+        return $cleanName;
+    }
+
+    /**
+     * Resolve o nome de classe completo de acordo com o padrão ZF1 para controllers.
+     *
+     * @param string $name
+     * @param string|null $module
+     * @return string
+     */
+    protected function getClassName(string $name, ?string $module): string
+    {
+        $fileName = $this->getFileName($name);
+
+        if ($module) {
+            return ucfirst(strtolower($module)) . '_' . $fileName;
         }
 
-        $destinationPath = $controllersPath . "/{$className}.php";
-        $stubPath = __DIR__ . '/../../../stubs/controller.stub';
-
-        $filesystem = new Filesystem();
-
-        if ($filesystem->exists($destinationPath)) {
-            $output->writeln("<error>O controller {$className} já existe em: {$destinationPath}</error>");
-            return Command::FAILURE;
-        }
-
-        try {
-            $stubContent = file_get_contents($stubPath);
-            $finalContent = str_replace(['{{ class }}', '{{class}}'], $className, $stubContent);
-
-            $filesystem->dumpFile($destinationPath, $finalContent);
-
-            $output->writeln("<info>Controller criada com sucesso em: {$destinationPath}</info>");
-            return Command::SUCCESS;
-        } catch (IOExceptionInterface $exception) {
-            $output->writeln("<error>Erro ao criar o arquivo: {$exception->getMessage()}</error>");
-            return Command::FAILURE;
-        }
+        return $fileName;
     }
 }
