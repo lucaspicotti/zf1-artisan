@@ -38,7 +38,7 @@ class MakeCronCommand extends GeneratorCommand
     }
 
     /**
-     * Retorna o caminho absoluto do template stub de um Controller.
+     * Retorna o caminho absoluto do template stub de um Cron.
      *
      * @return string
      */
@@ -57,12 +57,13 @@ class MakeCronCommand extends GeneratorCommand
     protected function getClassName(string $name, ?string $module): string
     {
         $fileName = $this->getFileName($name);
+        $classSuffix = str_replace('/', '_', $fileName);
 
         if ($module) {
-            return ucfirst(strtolower($module)) . '_' . $fileName;
+            return ucfirst(strtolower($module)) . '_' . $classSuffix;
         }
 
-        return $fileName;
+        return 'Henger_Plugin_Cron_' . $classSuffix;
     }
 
     /**

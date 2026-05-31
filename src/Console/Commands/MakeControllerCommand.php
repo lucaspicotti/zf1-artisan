@@ -55,13 +55,15 @@ class MakeControllerCommand extends GeneratorCommand
      */
     protected function getFileName(string $name): string
     {
-        $cleanName = ucfirst($name);
+        $parts = explode('/', $name);
+        $capitalizedParts = array_map('ucfirst', $parts);
 
-        if (!str_ends_with($cleanName, 'Controller')) {
-            $cleanName .= 'Controller';
+        $lastNameIndex = count($capitalizedParts) - 1;
+        if (!str_ends_with($capitalizedParts[$lastNameIndex], 'Controller')) {
+            $capitalizedParts[$lastNameIndex] .= 'Controller';
         }
 
-        return $cleanName;
+        return implode('/', $capitalizedParts);
     }
 
     /**
@@ -74,11 +76,12 @@ class MakeControllerCommand extends GeneratorCommand
     protected function getClassName(string $name, ?string $module): string
     {
         $fileName = $this->getFileName($name);
+        $classSuffix = str_replace('/', '_', $fileName);
 
         if ($module) {
-            return ucfirst(strtolower($module)) . '_' . $fileName;
+            return ucfirst(strtolower($module)) . '_' . $classSuffix;
         }
 
-        return $fileName;
+        return $classSuffix;
     }
 }
