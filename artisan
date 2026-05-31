@@ -2,6 +2,8 @@
 <?php
 
 use App\Console\Commands\MakeControllerCommand;
+use App\Console\Commands\MakeModelCommand;
+use App\Console\Commands\MakeCronCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Dotenv\Dotenv;
 use App\Console\Commands\TemplateCommand;
@@ -16,10 +18,12 @@ if (file_exists(__DIR__ . '/.env')) {
 }
 
 // Inicializa a aplicação de Console do Symfony
-$application = new Application($_ENV['APPLICATION_NAME'], '1.0.0');
+$application = new Application($_ENV['APPLICATION_NAME'] ?? 'Artisan ZF1', '1.0.0');
 
 $application->add(new TemplateCommand());
 $application->add(new MakeControllerCommand());
+$application->add(new MakeModelCommand());
+$application->add(new MakeCronCommand());
 
 // Executa a aplicação
 $application->run();
