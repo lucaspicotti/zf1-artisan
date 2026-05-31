@@ -4,6 +4,7 @@
 use App\Console\Commands\MakeControllerCommand;
 use App\Console\Commands\MakeModelCommand;
 use App\Console\Commands\MakeCronCommand;
+use App\Console\Commands\MakeFormCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Dotenv\Dotenv;
 use App\Console\Commands\TemplateCommand;
@@ -24,6 +25,7 @@ $application->add(new TemplateCommand());
 $application->add(new MakeControllerCommand());
 $application->add(new MakeModelCommand());
 $application->add(new MakeCronCommand());
+$application->add(new MakeFormCommand());
 
 // Executa a aplicação
 $application->run();
