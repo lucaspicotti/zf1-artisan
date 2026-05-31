@@ -1,0 +1,13 @@
+<?php
+
+class {{ class }} extends Zend_Db_Table
+{
+  protected $_name = '';
+
+  protected $_primary = '';
+
+  public function __construct()
+  {
+    parent::__construct(Zend_Registry::get('dbAdapter'));
+  }
+}
