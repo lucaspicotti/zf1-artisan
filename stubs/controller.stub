@@ -1,0 +1,17 @@
+<?php
+
+class {{class}} extends Henger_Controller_Action
+{
+  public function init()
+  {
+    $this->initView();
+    $this->view->baseUrl = $this->_request->getBaseUrl();
+    $this->setTituloPagina();
+    parent::init();
+  }
+
+  public function preDispatch()
+  {
+    $this->inicializarInformacoes();
+  }
+}

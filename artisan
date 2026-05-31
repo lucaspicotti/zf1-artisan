@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+use App\Console\Commands\MakeControllerCommand;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Dotenv\Dotenv;
+use App\Console\Commands\TemplateCommand;
+
+// Carrega o autoload do Composer
+// TODO: futuramente deverá incluir autoload do zend
+require __DIR__ . '/vendor/autoload.php';
+
+$dotenv = new Dotenv();
+if (file_exists(__DIR__ . '/.env')) {
+    $dotenv->load(__DIR__ . '/.env');
+}
+
+// Inicializa a aplicação de Console do Symfony
+$application = new Application($_ENV['APPLICATION_NAME'], '1.0.0');
+
+$application->add(new TemplateCommand());
+$application->add(new MakeControllerCommand());
+
+// Executa a aplicação
+$application->run();

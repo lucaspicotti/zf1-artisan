@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  cli:
+    build:
+      context: .
+      dockerfile: docker/PHP74.dockerfile
+    volumes:
+      - .:/app
+      - /home/lucaspicotti/code/teste:/home/lucaspicotti/code/teste
+    # Mantém o container vivo em segundo plano para podermos mandar comandos
+    tty: true
