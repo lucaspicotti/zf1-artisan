@@ -175,7 +175,10 @@ abstract class GeneratorCommand extends Command
      */
     protected function getFileName(string $name): string
     {
-        return ucfirst($name);
+        $parts = explode('/', $name);
+        $capitalizedParts = array_map('ucfirst', $parts);
+
+        return implode('/', $capitalizedParts);
     }
 
     /**
@@ -190,16 +193,5 @@ abstract class GeneratorCommand extends Command
     protected function populateStub(string $stubContent, string $className, string $name, ?string $module): string
     {
         return str_replace(['{{ class }}', '{{class}}'], $className, $stubContent);
-    }
-
-    /**
-     * Higieniza o nome fornecido pelo terminal
-     *
-     * @param string $name
-     * @return string Nome sanitizado.
-     */
-    protected function sanitizeName(string $name): string
-    {
-        return preg_replace('/[^a-zA-Z0-9_\/\\\]/', '', $name);
     }
 }
