@@ -56,12 +56,13 @@ class MakeModelCommand extends GeneratorCommand
      */
     protected function getClassName(string $name, ?string $module): string
     {
-        $cleanName = ucfirst($name);
+        $fileName = $this->getFileName($name);
+        $classSuffix = str_replace('/', '_', $fileName);
 
         if ($module) {
-            return ucfirst(strtolower($module)) . '_Model_' . $cleanName;
+            return ucfirst(strtolower($module)) . '_Model_' . $classSuffix;
         }
 
-        return $cleanName;
+        return $classSuffix;
     }
 }
