@@ -1,0 +1,35 @@
+<?php
+
+class {{ class }} {{ base_class }}
+{
+  public function indexAction()
+  {
+    //
+  }
+
+  public function getAction()
+  {
+    //
+  }
+
+  public function postAction()
+  {
+    //
+  }
+
+  public function putAction()
+  {
+    //
+  }
+
+  public function deleteAction()
+  {
+    //
+  }
+
+  public function headAction()
+  {
+    //
+  }
+
+}
