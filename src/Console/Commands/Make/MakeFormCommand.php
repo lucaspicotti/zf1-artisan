@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Make;
+
+use App\Console\Commands\GeneratorCommand;
 
 /**
  * Class MakeFormCommand
@@ -23,8 +25,8 @@ class MakeFormCommand extends GeneratorCommand
     {
         parent::configure();
         $this
-            ->setDescription('Gera um novo Form')
-            ->setHelp('Este comando cria um form');
+            ->setDescription('Gera um novo formulário (Zend_Form)')
+            ->setHelp('Este comando cria um formulário com suporte a estruturas modulares.');
     }
 
     /**

@@ -1,10 +1,11 @@
 #!/usr/bin/env php
 <?php
 
-use App\Console\Commands\MakeControllerCommand;
-use App\Console\Commands\MakeModelCommand;
-use App\Console\Commands\MakeCronCommand;
-use App\Console\Commands\MakeFormCommand;
+use App\Console\Commands\Make\MakeApiCommand;
+use App\Console\Commands\Make\MakeControllerCommand;
+use App\Console\Commands\Make\MakeModelCommand;
+use App\Console\Commands\Make\MakeCronCommand;
+use App\Console\Commands\Make\MakeFormCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Dotenv\Dotenv;
 use App\Console\Commands\TemplateCommand;
@@ -26,6 +27,7 @@ $application->add(new MakeControllerCommand());
 $application->add(new MakeModelCommand());
 $application->add(new MakeCronCommand());
 $application->add(new MakeFormCommand());
+$application->add(new MakeApiCommand());
 
 // Executa a aplicação
 $application->run();

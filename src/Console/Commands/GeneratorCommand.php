@@ -143,16 +143,17 @@ abstract class GeneratorCommand extends Command
     {
         $resourceType = $this->getResourceType();
 
+        $resDir = rtrim($basePath, '/') . "/" . $resourceType;
+        $resTitleDir = rtrim($basePath, '/') . "/" . ucfirst($resourceType);
+        $actualResDir = (!is_dir($resDir) && is_dir($resTitleDir)) ? $resTitleDir : $resDir;
+
         if ($module) {
-            $defaultDir = rtrim($basePath, '/') . "/" . $resourceType . "/" . strtolower($module);
-            $titleDir = rtrim($basePath, '/') . "/" . $resourceType . "/" . ucfirst($module);
+            $defaultDir = $actualResDir . "/" . strtolower($module);
+            $titleDir = $actualResDir . "/" . ucfirst($module);
 
             $directory = (!is_dir($defaultDir) && is_dir($titleDir)) ? $titleDir : $defaultDir;
         } else {
-            $defaultDir = rtrim($basePath, '/') . '/' . $resourceType;
-            $titleDir = rtrim($basePath, '/') . '/' . ucfirst($resourceType);
-
-            $directory = (!is_dir($defaultDir) && is_dir($titleDir)) ? $titleDir : $defaultDir;
+            $directory = $actualResDir;
         }
 
         $fileName = $this->getFileName($name);

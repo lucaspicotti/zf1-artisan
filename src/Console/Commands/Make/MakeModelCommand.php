@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Make;
+
+use App\Console\Commands\GeneratorCommand;
 
 /**
  * Class MakeModelCommand
@@ -23,8 +25,8 @@ class MakeModelCommand extends GeneratorCommand
     {
         parent::configure();
         $this
-            ->setDescription('Gera uma nova model')
-            ->setHelp('Este comando cria uma model com suporte a estruturas modulares.');
+            ->setDescription('Gera uma nova model de tabela (Zend_Db_Table)')
+            ->setHelp('Este comando cria uma model de tabela com suporte a estruturas modulares.');
     }
 
     /**

@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Make;
+
+use App\Console\Commands\GeneratorCommand;
 
 /**
  * Class MakeCronCommand
@@ -23,8 +25,8 @@ class MakeCronCommand extends GeneratorCommand
     {
         parent::configure();
         $this
-            ->setDescription('Gera um novo Cron')
-            ->setHelp('Este comando cria um cron');
+            ->setDescription('Gera uma nova rotina agendada (cron)')
+            ->setHelp('Este comando cria uma nova classe de cron no diretório de rotinas.');
     }
 
     /**

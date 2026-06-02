@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Make;
+
+use App\Console\Commands\GeneratorCommand;
 
 /**
  * Class MakeControllerCommand
@@ -23,8 +25,8 @@ class MakeControllerCommand extends GeneratorCommand
     {
         parent::configure();
         $this
-            ->setDescription('Gera um novo controller.')
-            ->setHelp('Este comando cria um controller com suporte a estruturas modulares.');
+            ->setDescription('Gera um novo controller de ação (Zend_Controller_Action)')
+            ->setHelp('Este comando cria um controller de ação com suporte a estruturas modulares.');
     }
 
     /**
