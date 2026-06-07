@@ -46,7 +46,7 @@ class MakeCronCommand extends GeneratorCommand
      */
     protected function getStubPath(): string
     {
-        return __DIR__ . '/../../../stubs/cron.stub';
+        return $this->resolveStubPath('cron.stub');
     }
 
     /**

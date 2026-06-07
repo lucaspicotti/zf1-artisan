@@ -64,7 +64,7 @@ class MakeApiCommand extends GeneratorCommand
      */
     protected function getStubPath(): string
     {
-        return __DIR__ . '/../../../stubs/api.stub';
+        return $this->resolveStubPath('api.stub');
     }
 
     /**

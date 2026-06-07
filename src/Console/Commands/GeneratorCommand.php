@@ -195,4 +195,15 @@ abstract class GeneratorCommand extends Command
     {
         return str_replace(['{{ class }}', '{{class}}'], $className, $stubContent);
     }
+
+    /**
+     * Resolve o caminho absoluto de um stub interno do pacote de forma dinâmica e portável.
+     *
+     * @param string $stubName Nome do arquivo de stub (ex: 'cron.stub').
+     * @return string Caminho absoluto completo.
+     */
+    protected function resolveStubPath(string $stubName): string
+    {
+        return dirname(__DIR__, 3) . '/stubs/' . $stubName;
+    }
 }

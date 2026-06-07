@@ -46,7 +46,7 @@ class MakeModelCommand extends GeneratorCommand
      */
     protected function getStubPath(): string
     {
-        return __DIR__ . '/../../../stubs/model.stub';
+        return $this->resolveStubPath('model.stub');
     }
 
     /**

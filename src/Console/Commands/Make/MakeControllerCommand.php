@@ -46,7 +46,7 @@ class MakeControllerCommand extends GeneratorCommand
      */
     protected function getStubPath(): string
     {
-        return __DIR__ . '/../../../stubs/controller.stub';
+        return $this->resolveStubPath('controller.stub');
     }
 
     /**

@@ -46,7 +46,7 @@ class MakeFormCommand extends GeneratorCommand
      */
     protected function getStubPath(): string
     {
-        return __DIR__ . '/../../../stubs/form.stub';
+        return $this->resolveStubPath('form.stub');
     }
 
     /**
