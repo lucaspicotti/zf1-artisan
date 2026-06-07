@@ -8,10 +8,11 @@ use App\Console\Commands\Make\MakeCronCommand;
 use App\Console\Commands\Make\MakeFormCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Dotenv\Dotenv;
-use App\Console\Commands\TemplateCommand;
+use App\Console\Commands\Cron\CronListCommand;
+use App\Console\Commands\Cron\CronRunCommand;
+use App\Console\Commands\DebugBootstrapCommand;
 
 // Carrega o autoload do Composer
-// TODO: futuramente deverá incluir autoload do zend
 require __DIR__ . '/vendor/autoload.php';
 
 $dotenv = new Dotenv();
@@ -22,12 +23,14 @@ if (file_exists(__DIR__ . '/.env')) {
 // Inicializa a aplicação de Console do Symfony
 $application = new Application($_ENV['APPLICATION_NAME'] ?? 'Artisan ZF1', '1.0.0');
 
-$application->add(new TemplateCommand());
 $application->add(new MakeControllerCommand());
 $application->add(new MakeModelCommand());
 $application->add(new MakeCronCommand());
 $application->add(new MakeFormCommand());
 $application->add(new MakeApiCommand());
+$application->add(new CronListCommand());
+$application->add(new CronRunCommand());
+$application->add(new DebugBootstrapCommand());
 
 // Executa a aplicação
 $application->run();

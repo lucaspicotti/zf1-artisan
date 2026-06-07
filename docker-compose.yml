@@ -8,5 +8,7 @@ services:
     volumes:
       - .:/app
       - /home/lucaspicotti/code/teste:/home/lucaspicotti/code/teste
+      - /var/www:/var/www
+    network_mode: "host"
     # Mantém o container vivo em segundo plano para podermos mandar comandos
     tty: true
