@@ -34,7 +34,7 @@ class StandardCronExecutor implements CronExecutorInterface
                 );
 
                 if (!$helper->ask($input, $output, $question)) {
-                    $output->writeln("<error>Execução abortada pelo usuário devido ao travamento ativo.</error>");
+                    $output->writeln("<fg=red>Execução abortada pelo usuário devido ao travamento ativo.</fg=red>");
                     return Command::SUCCESS;
                 }
             }
@@ -46,13 +46,23 @@ class StandardCronExecutor implements CronExecutorInterface
         // Ativa o lock para esta execução
         $locked = $instance->tryLock();
         if (!$locked) {
-            $output->writeln("<error>Erro: Não foi possível obter a trava (lock) para executar a rotina.</error>");
+            $output->writeln("<fg=red>Erro: Não foi possível obter a trava (lock) para executar a rotina.</fg=red>");
             return Command::FAILURE;
         }
 
         try {
             // Configura o horário de início antes de rodar (assim como no serviço original)
             $instance->setHorarioInicioExecucao(new \Zend_Date());
+
+            if (method_exists($instance, 'setForceRun')) {
+                $instance->setForceRun($input->getOption('force'));
+            }
+
+            if (method_exists($instance, 'isActive') && !$instance->isActive()) {
+                $output->writeln("<fg=red>Erro: A rotina não está ativa para execução no momento (isActive retornou falso).</fg=red>");
+                return Command::FAILURE;
+            }
+
             $instance->run();
         } finally {
             if ($locked) {

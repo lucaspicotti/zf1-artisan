@@ -48,7 +48,7 @@ class OperatorCronExecutor implements CronExecutorInterface
                 );
 
                 if (!$helper->ask($input, $output, $question)) {
-                    $output->writeln("<error>Execução abortada pelo usuário.</error>");
+                    $output->writeln("<fg=red>Execução abortada pelo usuário.</fg=red>");
                     return Command::SUCCESS;
                 }
             }
@@ -79,9 +79,14 @@ class OperatorCronExecutor implements CronExecutorInterface
                 \Zend_Db_Table::setDefaultAdapter($dbOperador);
 
                 $instance->setOperador($operador);
+
+                if (method_exists($instance, 'setForceRun')) {
+                    $instance->setForceRun($input->getOption('force'));
+                }
+
                 $instance->execute($dbOperador, $operador);
             } catch (\Throwable $e) {
-                $output->writeln("<error>Erro no operador {$operador->nome}: " . $e->getMessage() . "</error>");
+                $output->writeln("<fg=red>Erro no operador {$operador->nome}: " . $e->getMessage() . "</fg=red>");
                 if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
                     $output->writeln("<comment>" . $e->getTraceAsString() . "</comment>");
                 }

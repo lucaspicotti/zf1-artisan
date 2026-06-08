@@ -48,7 +48,7 @@ class CronRunCommand extends ZendCommand
         try {
             $this->bootstrapZend($input);
         } catch (\Throwable $e) {
-            $output->writeln("<error>Erro no bootstrap do Zend Framework: " . $e->getMessage() . "</error>");
+            $output->writeln("<fg=red>Erro no bootstrap do Zend Framework: " . $e->getMessage() . "</fg=red>");
             if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
                 $output->writeln("<comment>" . $e->getTraceAsString() . "</comment>");
             }
@@ -58,7 +58,7 @@ class CronRunCommand extends ZendCommand
         try {
             $instancia = $this->resolveInstance($input);
         } catch (\Throwable $e) {
-            $output->writeln("<error>" . $e->getMessage() . "</error>");
+            $output->writeln("<fg=red>" . $e->getMessage() . "</fg=red>");
             if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
                 $output->writeln("<comment>" . $e->getTraceAsString() . "</comment>");
             }
@@ -93,12 +93,12 @@ class CronRunCommand extends ZendCommand
             throw new \RuntimeException("Erro: Nenhuma classe correspondente encontrada no arquivo.");
         }
 
-        // Tenta autoloading primeiro; se falhar, faz require_once como fallback
-        if (!class_exists($className)) {
+        // Tenta verificar se a classe já está na memória sem disparar o autoloader (evitando warnings); se não estiver, faz require_once
+        if (!class_exists($className, false)) {
             require_once $filePath;
         }
 
-        if (!class_exists($className)) {
+        if (!class_exists($className, false)) {
             throw new \RuntimeException("Erro: Classe '{$className}' não encontrada no arquivo.");
         }
 
@@ -129,12 +129,14 @@ class CronRunCommand extends ZendCommand
                 try {
                     $statusCode = $executor->execute($input, $output, $instancia, $this);
                     
-                    $elapsedTime = round(microtime(true) - $startTime, 2);
-                    $output->writeln("<info>Rotina executada com sucesso em {$elapsedTime} segundos.</info>");
+                    if ($statusCode === self::SUCCESS) {
+                        $elapsedTime = round(microtime(true) - $startTime, 2);
+                        $output->writeln("<info>Rotina executada com sucesso em {$elapsedTime} segundos.</info>");
+                    }
                     
                     return $statusCode;
                 } catch (\Throwable $e) {
-                    $output->writeln("<error>Erro durante a execução da rotina: " . $e->getMessage() . "</error>");
+                    $output->writeln("<fg=red>Erro durante a execução da rotina: " . $e->getMessage() . "</fg=red>");
                     if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
                         $output->writeln("<comment>" . $e->getTraceAsString() . "</comment>");
                     }
@@ -143,7 +145,7 @@ class CronRunCommand extends ZendCommand
             }
         }
 
-        $output->writeln("<error>Erro: Tipo de classe de cron desconhecido ou não suportado.</error>");
+        $output->writeln("<fg=red>Erro: Tipo de classe de cron desconhecido ou não suportado.</fg=red>");
         return self::FAILURE;
     }
 }
