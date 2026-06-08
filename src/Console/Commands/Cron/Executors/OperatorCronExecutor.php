@@ -65,10 +65,18 @@ class OperatorCronExecutor implements CronExecutorInterface
         $operatorId = $input->getOption('operator');
 
         if ($operatorId) {
-            $operador = $operadorModel->fetchRow(
-                $operadorModel->select()
-                    ->where('id = ? OR subdominio = ?', $operatorId, $operatorId)
-            );
+            $select = $operadorModel->select();
+            if (is_numeric($operatorId)) {
+                $select->where('oid = ?', (int) $operatorId);
+            } else {
+                $select->where(
+                    'usuario = ? OR nome = ? OR banco = ?',
+                    $operatorId,
+                    $operatorId,
+                    $operatorId
+                );
+            }
+            $operador = $operadorModel->fetchRow($select);
             if (!$operador) {
                 throw new \RuntimeException(
                     "Operador '{$operatorId}' não encontrado."
