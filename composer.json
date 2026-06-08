@@ -2,6 +2,9 @@
     "name": "lucaspicotti/zf1-artisan",
     "description": "Ferramenta CLI estilo Artisan para o Zend1",
     "type": "library",
+    "bin": [
+        "artisan"
+    ],
     "license": "MIT",
     "autoload": {
         "psr-4": {

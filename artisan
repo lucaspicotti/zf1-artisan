@@ -1,36 +1,16 @@
 #!/usr/bin/env php
 <?php
 
-use App\Console\Commands\Make\MakeApiCommand;
-use App\Console\Commands\Make\MakeControllerCommand;
-use App\Console\Commands\Make\MakeModelCommand;
-use App\Console\Commands\Make\MakeCronCommand;
-use App\Console\Commands\Make\MakeFormCommand;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Dotenv\Dotenv;
-use App\Console\Commands\Cron\CronListCommand;
-use App\Console\Commands\Cron\CronRunCommand;
-use App\Console\Commands\DebugBootstrapCommand;
+use App\Console\Kernel;
 
 // Carrega o autoload do Composer
-require __DIR__ . '/vendor/autoload.php';
-
-$dotenv = new Dotenv();
-if (file_exists(__DIR__ . '/.env')) {
-    $dotenv->load(__DIR__ . '/.env');
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require __DIR__ . '/vendor/autoload.php';
+} else {
+    require __DIR__ . '/../../autoload.php';
 }
 
-// Inicializa a aplicação de Console do Symfony
-$application = new Application($_ENV['APPLICATION_NAME'] ?? 'Artisan ZF1', '1.0.0');
+$kernel = new Kernel();
+$status = $kernel->handle();
 
-$application->add(new MakeControllerCommand());
-$application->add(new MakeModelCommand());
-$application->add(new MakeCronCommand());
-$application->add(new MakeFormCommand());
-$application->add(new MakeApiCommand());
-$application->add(new CronListCommand());
-$application->add(new CronRunCommand());
-$application->add(new DebugBootstrapCommand());
-
-// Executa a aplicação
-$application->run();
+exit($status);
