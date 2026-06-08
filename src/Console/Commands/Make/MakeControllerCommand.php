@@ -1,4 +1,15 @@
 <?php
+/**
+ * File containing the MakeControllerCommand class.
+ *
+ * PHP version 7.4
+ *
+ * @category Console
+ * @package  App\Console\Commands\Make
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
+ */
 
 namespace App\Console\Commands\Make;
 
@@ -8,6 +19,13 @@ use App\Console\Commands\GeneratorCommand;
  * Class MakeControllerCommand
  *
  * Comando console responsável por automatizar a criação de novos Controllers.
+ *
+ *
+ * @category Console
+ * @package  App\Console\Commands\Make
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
  */
 class MakeControllerCommand extends GeneratorCommand
 {
@@ -52,7 +70,7 @@ class MakeControllerCommand extends GeneratorCommand
     /**
      * Resolve o nome físico do arquivo do controller (garante sufixo "Controller").
      *
-     * @param string $name
+     * @param  string $name
      * @return string
      */
     protected function getFileName(string $name): string
@@ -71,8 +89,8 @@ class MakeControllerCommand extends GeneratorCommand
     /**
      * Resolve o nome de classe completo de acordo com o padrão ZF1 para controllers.
      *
-     * @param string $name
-     * @param string|null $module
+     * @param  string      $name
+     * @param  string|null $module
      * @return string
      */
     protected function getClassName(string $name, ?string $module): string

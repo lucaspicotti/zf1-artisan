@@ -1,4 +1,15 @@
 <?php
+/**
+ * File containing the MakeFormCommand class.
+ *
+ * PHP version 7.4
+ *
+ * @category Console
+ * @package  App\Console\Commands\Make
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
+ */
 
 namespace App\Console\Commands\Make;
 
@@ -8,19 +19,26 @@ use App\Console\Commands\GeneratorCommand;
  * Class MakeFormCommand
  *
  * Comando console responsável por automatizar a criação de novos Form.
+ *
+ *
+ * @category Console
+ * @package  App\Console\Commands\Make
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
  */
 class MakeFormCommand extends GeneratorCommand
 {
     /**
-    * @var string O nome e a assinatura padrão do comando CLI.
-    */
+     * @var string O nome e a assinatura padrão do comando CLI.
+     */
     protected static $defaultName = 'make:form';
 
     /**
-    * Configura as opções do console e a descrição de ajuda para o comando.
-    *
-    * @return void
-    */
+     * Configura as opções do console e a descrição de ajuda para o comando.
+     *
+     * @return void
+     */
     protected function configure(): void
     {
         parent::configure();
@@ -52,8 +70,8 @@ class MakeFormCommand extends GeneratorCommand
     /**
      * Resolve o nome de classe completo
      *
-     * @param string $name
-     * @param string|null $module
+     * @param  string      $name
+     * @param  string|null $module
      * @return string
      */
     protected function getClassName(string $name, ?string $module): string

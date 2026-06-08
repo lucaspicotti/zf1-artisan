@@ -1,4 +1,15 @@
 <?php
+/**
+ * File containing the InteractiveMenu class.
+ *
+ * PHP version 7.4
+ *
+ * @category Console
+ * @package  App\Console\Support
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
+ */
 
 namespace App\Console\Support;
 
@@ -13,6 +24,13 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
  * Provê um menu interativo de seleção de opções via terminal com navegação
  * por setas direcionais, destaque colorido e paginação (viewport deslizante)
  * para evitar estouro de tela.
+ *
+ *
+ * @category Console
+ * @package  App\Console\Support
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
  */
 class InteractiveMenu
 {

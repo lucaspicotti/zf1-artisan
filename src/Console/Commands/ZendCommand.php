@@ -1,4 +1,15 @@
 <?php
+/**
+ * File containing the ZendCommand class.
+ *
+ * PHP version 7.4
+ *
+ * @category Console
+ * @package  App\Console\Commands
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
+ */
 
 namespace App\Console\Commands;
 
@@ -10,6 +21,13 @@ use Symfony\Component\Console\Input\InputOption;
  * Class ZendCommand
  *
  * Classe base abstrata para todos os comandos que exigem a inicialização e o bootstrap do Zend Framework 1.
+ *
+ *
+ * @category Console
+ * @package  App\Console\Commands
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
  */
 abstract class ZendCommand extends Command
 {
@@ -31,7 +49,7 @@ abstract class ZendCommand extends Command
     /**
      * Inicializa e executa o bootstrap do Zend Framework 1.
      *
-     * @param InputInterface $input Entrada do console para resolver opções.
+     * @param  InputInterface $input Entrada do console para resolver opções.
      * @return void
      * @throws \RuntimeException Se APPLICATION_PATH não puder ser resolvido.
      */
@@ -74,7 +92,7 @@ abstract class ZendCommand extends Command
                     "Zend Framework 1 (Zend/Application.php) não foi encontrado no include_path."
                 );
             }
-            require_once 'Zend/Application.php';
+            include_once 'Zend/Application.php';
         }
 
         $this->zendApplication = new \Zend_Application(
@@ -98,7 +116,7 @@ abstract class ZendCommand extends Command
     /**
      * Extrai o primeiro nome de classe definido em um arquivo PHP usando regex.
      *
-     * @param string $filePath
+     * @param  string $filePath
      * @return string|null
      */
     protected function getClassNameFromFile(string $filePath): ?string

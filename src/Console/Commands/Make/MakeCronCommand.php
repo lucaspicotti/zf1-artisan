@@ -1,4 +1,15 @@
 <?php
+/**
+ * File containing the MakeCronCommand class.
+ *
+ * PHP version 7.4
+ *
+ * @category Console
+ * @package  App\Console\Commands\Make
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
+ */
 
 namespace App\Console\Commands\Make;
 
@@ -8,19 +19,26 @@ use App\Console\Commands\GeneratorCommand;
  * Class MakeCronCommand
  *
  * Comando console responsável por automatizar a criação de novos Cron.
+ *
+ *
+ * @category Console
+ * @package  App\Console\Commands\Make
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
  */
 class MakeCronCommand extends GeneratorCommand
 {
     /**
-    * @var string O nome e a assinatura padrão do comando CLI.
-    */
+     * @var string O nome e a assinatura padrão do comando CLI.
+     */
     protected static $defaultName = 'make:cron';
 
     /**
-    * Configura as opções do console e a descrição de ajuda para o comando.
-    *
-    * @return void
-    */
+     * Configura as opções do console e a descrição de ajuda para o comando.
+     *
+     * @return void
+     */
     protected function configure(): void
     {
         parent::configure();
@@ -52,8 +70,8 @@ class MakeCronCommand extends GeneratorCommand
     /**
      * Resolve o nome de classe completo
      *
-     * @param string $name
-     * @param string|null $module
+     * @param  string      $name
+     * @param  string|null $module
      * @return string
      */
     protected function getClassName(string $name, ?string $module): string
@@ -71,10 +89,10 @@ class MakeCronCommand extends GeneratorCommand
     /**
      * Preenche as chaves de variáveis do stub de Cron.
      *
-     * @param string $stubContent
-     * @param string $className
-     * @param string $name
-     * @param string|null $module
+     * @param  string      $stubContent
+     * @param  string      $className
+     * @param  string      $name
+     * @param  string|null $module
      * @return string
      */
     protected function populateStub(string $stubContent, string $className, string $name, ?string $module): string

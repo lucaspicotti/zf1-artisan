@@ -1,4 +1,15 @@
 <?php
+/**
+ * File containing the DebugBootstrapCommand class.
+ *
+ * PHP version 7.4
+ *
+ * @category Console
+ * @package  App\Console\Commands
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
+ */
 
 namespace App\Console\Commands;
 
@@ -10,6 +21,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Class DebugBootstrapCommand
  *
  * Comando responsável por testar, validar e depurar cada etapa do bootstrap do Zend Framework 1.
+ *
+ *
+ * @category Console
+ * @package  App\Console\Commands
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
  */
 class DebugBootstrapCommand extends ZendCommand
 {
@@ -113,7 +131,7 @@ class DebugBootstrapCommand extends ZendCommand
         // 4. Executar o bootstrap do Zend_Application
         $output->write("6. Inicializando Zend_Application e executando Bootstrap... ");
         try {
-            require_once 'Zend/Application.php';
+            include_once 'Zend/Application.php';
 
             $zendApplication = new \Zend_Application(
                 'Cron',

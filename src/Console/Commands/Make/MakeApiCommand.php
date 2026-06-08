@@ -1,4 +1,15 @@
 <?php
+/**
+ * File containing the MakeApiCommand class.
+ *
+ * PHP version 7.4
+ *
+ * @category Console
+ * @package  App\Console\Commands\Make
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
+ */
 
 namespace App\Console\Commands\Make;
 
@@ -8,6 +19,13 @@ use App\Console\Commands\GeneratorCommand;
  * Class MakeApiCommand
  *
  * Comando console responsável por automatizar a criação de novos arquivos de API.
+ *
+ *
+ * @category Console
+ * @package  App\Console\Commands\Make
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
  */
 class MakeApiCommand extends GeneratorCommand
 {
@@ -33,8 +51,8 @@ class MakeApiCommand extends GeneratorCommand
      * Pré-processa o argumento 'name' para normalizar prefixos de API redundantes
      * e executa o fluxo padrão de geração de arquivos.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param  \Symfony\Component\Console\Input\InputInterface   $input
+     * @param  \Symfony\Component\Console\Output\OutputInterface $output
      * @return int Status code de retorno do console.
      */
     protected function execute(\Symfony\Component\Console\Input\InputInterface $input, \Symfony\Component\Console\Output\OutputInterface $output): int
@@ -70,8 +88,8 @@ class MakeApiCommand extends GeneratorCommand
     /**
      * Resolve o nome de classe completo de acordo com o padrão ZF1 para arquivos de API.
      *
-     * @param string $name
-     * @param string|null $module
+     * @param  string      $name
+     * @param  string|null $module
      * @return string
      */
     protected function getClassName(string $name, ?string $module): string
@@ -92,10 +110,10 @@ class MakeApiCommand extends GeneratorCommand
      * Se a classe gerada for um Controller (ex: TerminalController), ela estenderá a classe
      * correspondente a Api_<Versao>_AbstractRestController. Caso contrário, não estende nada.
      *
-     * @param string $stubContent
-     * @param string $className
-     * @param string $name
-     * @param string|null $module
+     * @param  string      $stubContent
+     * @param  string      $className
+     * @param  string      $name
+     * @param  string|null $module
      * @return string
      */
     protected function populateStub(string $stubContent, string $className, string $name, ?string $module): string

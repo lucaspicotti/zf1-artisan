@@ -1,4 +1,15 @@
 <?php
+/**
+ * File containing the GeneratorCommand class.
+ *
+ * PHP version 7.4
+ *
+ * @category Console
+ * @package  App\Console\Commands
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
+ */
 
 namespace App\Console\Commands;
 
@@ -15,6 +26,13 @@ use App\Console\Support\ResourceInputParser;
  * Class GeneratorCommand
  *
  * Classe base abstrata para todos os comandos de geração de arquivos (stubs) no console.
+ *
+ *
+ * @category Console
+ * @package  App\Console\Commands
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
  */
 abstract class GeneratorCommand extends Command
 {
@@ -50,8 +68,9 @@ abstract class GeneratorCommand extends Command
     /**
      * Orquestra todo o fluxo sequencial de validação, formatação e geração do código.
      *
-     * @param InputInterface $input Entrada do console com argumentos e opções.
-     * @param OutputInterface $output Saída do console para feedbacks visuais.
+     * @param  InputInterface  $input  Entrada do console com argumentos e
+     *                                 opções.
+     * @param  OutputInterface $output Saída do console para feedbacks visuais.
      * @return int Status code de retorno do console (0 para sucesso, 1 para falha).
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -125,8 +144,8 @@ abstract class GeneratorCommand extends Command
     /**
      * Resolve o nome final da classe com base no recurso e se pertence a um módulo.
      *
-     * @param string $name Nome base do recurso.
-     * @param string|null $module Módulo informado.
+     * @param  string      $name   Nome base do recurso.
+     * @param  string|null $module Módulo informado.
      * @return string Nome completo da classe (ex: Admin_ProductController).
      */
     abstract protected function getClassName(string $name, ?string $module): string;
@@ -134,9 +153,10 @@ abstract class GeneratorCommand extends Command
     /**
      * Resolve o nome físico do arquivo destino e o nome final de classe.
      *
-     * @param string $basePath Caminho absoluto de APPLICATION_PATH.
-     * @param string $name Nome sanitizado do recurso.
-     * @param string|null $module Módulo correspondente opcional.
+     * @param  string      $basePath Caminho absoluto de APPLICATION_PATH.
+     * @param  string      $name     Nome sanitizado do recurso.
+     * @param  string|null $module   Módulo correspondente
+     *                               opcional.
      * @return array contendo chaves 'class_name' e 'path'.
      */
     protected function resolveTargetDetails(string $basePath, string $name, ?string $module): array
@@ -171,7 +191,7 @@ abstract class GeneratorCommand extends Command
      *
      * Pode ser estendido se o gerador final exigir sufixo/extensão específica.
      *
-     * @param string $name
+     * @param  string $name
      * @return string
      */
     protected function getFileName(string $name): string
@@ -185,10 +205,12 @@ abstract class GeneratorCommand extends Command
     /**
      * Preenche as chaves de variáveis delimitadas do stub.
      *
-     * @param string $stubContent Conteúdo bruto do stub.
-     * @param string $className Nome completo da classe.
-     * @param string $name Nome original sanitizado do recurso.
-     * @param string|null $module Módulo informado.
+     * @param  string      $stubContent Conteúdo bruto do
+     *                                  stub.
+     * @param  string      $className   Nome completo da classe.
+     * @param  string      $name        Nome original sanitizado do recurso.
+     * @param  string|null $module      Módulo
+     *                                  informado.
      * @return string Conteúdo final formatado para salvar.
      */
     protected function populateStub(string $stubContent, string $className, string $name, ?string $module): string
@@ -199,7 +221,7 @@ abstract class GeneratorCommand extends Command
     /**
      * Resolve o caminho absoluto de um stub interno do pacote de forma dinâmica e portável.
      *
-     * @param string $stubName Nome do arquivo de stub (ex: 'cron.stub').
+     * @param  string $stubName Nome do arquivo de stub (ex: 'cron.stub').
      * @return string Caminho absoluto completo.
      */
     protected function resolveStubPath(string $stubName): string

@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * File containing the CronListCommand class.
+ *
+ * PHP version 7.4
+ *
+ * @category Console
+ * @package  App\Console\Commands\Cron
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
+ */
+
 namespace App\Console\Commands\Cron;
 
 use App\Console\Commands\ZendCommand;
@@ -9,9 +21,20 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
+/**
+ * Class CronListCommand
+ *
+ * @category Console
+ * @package  App\Console\Commands\Cron
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
+ */
 class CronListCommand extends ZendCommand
 {
     /**
+     * Nome do comando
+     *
      * @var string O nome e a assinatura padrão do comando CLI.
      */
     protected static $defaultName = 'cron:list';
@@ -35,11 +58,11 @@ class CronListCommand extends ZendCommand
     }
 
     /**
-     * Executa a listagem das crons carregando os arquivos e usando Reflection,
-     * caindo de volta para análise estática de regex caso o Zend Framework não esteja instalado localmente.
+     * Executa a listagem das crons carregando os arquivos e usando Reflection
      *
-     * @param InputInterface $input Entrada do console.
+     * @param InputInterface  $input  Entrada do console.
      * @param OutputInterface $output Saída do console.
+     *
      * @return int Status code de retorno do console.
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -47,10 +70,19 @@ class CronListCommand extends ZendCommand
         try {
             $this->bootstrapZend($input);
         } catch (\Throwable $e) {
-            $output->writeln("<fg=red>Erro: Não foi possível inicializar o Zend Framework para listar as crons.</fg=red>");
-            $output->writeln("<fg=red>Detalhes: " . $e->getMessage() . "</fg=red>");
+            $output->writeln(
+                "<fg=red>Erro: Não foi possível inicializar o " .
+                "Zend Framework para listar as crons.</fg=red>"
+            );
+            $output->writeln(
+                "<fg=red>Detalhes: " . $e->getMessage() . "</fg=red>"
+            );
             if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                $output->writeln("<comment>" . $e->getTraceAsString() . "</comment>\n");
+                $output->writeln(
+                    "<comment>" .
+                        $e->getTraceAsString() .
+                    "</comment>\n"
+                );
             }
             return self::FAILURE;
         }
@@ -58,18 +90,22 @@ class CronListCommand extends ZendCommand
         $basePath = $input->getOption('path') ?? $_ENV['APPLICATION_PATH'] ?? null;
         if (!$basePath) {
             $output->writeln(
-                "<fg=red>Erro: A variável de ambiente APPLICATION_PATH não foi definida nem via opção --path.</fg=red>"
+                "<fg=red>Erro: A variável de ambiente APPLICATION_PATH " .
+                "não foi definida nem via opção --path.</fg=red>"
             );
             return self::FAILURE;
         }
 
         $cronDir = rtrim($basePath, '/') . '/cron';
         if (!is_dir($cronDir)) {
-            $output->writeln("<fg=red>Diretório de crons não encontrado em: {$cronDir}</fg=red>");
+            $output->writeln(
+                "<fg=red>Diretório de crons não encontrado em: " .
+                "{$cronDir}</fg=red>"
+            );
             return self::FAILURE;
         }
 
-        $files = $this->scanDirectory($cronDir);
+        $files = $this->_scanDirectory($cronDir);
         $rows = [];
 
         foreach ($files as $filePath) {
@@ -129,19 +165,25 @@ class CronListCommand extends ZendCommand
         }
 
         if ($input->getOption('interactive')) {
-            $this->runInteractiveMode($input, $output, $rows, $cronDir);
+            $this->_runInteractiveMode($input, $output, $rows, $cronDir);
             return self::SUCCESS;
         }
 
         if (empty($rows)) {
-            $output->writeln("<comment>Nenhuma rotina de cron ativa ou executável foi encontrada.</comment>");
+            $output->writeln(
+                "<comment>Nenhuma rotina de cron ativa ou " .
+                "executável foi encontrada.</comment>"
+            );
             return self::SUCCESS;
         }
 
         // Ordena por atalho
-        usort($rows, function ($a, $b) {
-            return strcmp($a[0], $b[0]);
-        });
+        usort(
+            $rows,
+            function ($a, $b) {
+                return strcmp($a[0], $b[0]);
+            }
+        );
 
         $table = new Table($output);
         $table
@@ -156,8 +198,12 @@ class CronListCommand extends ZendCommand
     /**
      * Executa o modo interativo apresentando um menu de escolhas.
      */
-    private function runInteractiveMode(InputInterface $input, OutputInterface $output, array $rows, string $cronDir): void
-    {
+    private function _runInteractiveMode(
+        InputInterface $input,
+        OutputInterface $output,
+        array $rows,
+        string $cronDir
+    ): void {
         $choices = [];
         $mapping = [];
 
@@ -229,15 +275,25 @@ class CronListCommand extends ZendCommand
                 $runInput = new \Symfony\Component\Console\Input\ArrayInput($arguments);
 
                 try {
-                    $output->writeln("<comment>Iniciando execução da rotina: {$selection}...</comment>\n");
+                    $output->writeln(
+                        "<comment>Iniciando execução da rotina: {$selection}" .
+                        "...</comment>\n"
+                    );
                     $returnCode = $command->run($runInput, $output);
                     $output->writeln("");
                 } catch (\Throwable $e) {
-                    $output->writeln("\n<fg=red>Erro na execução: " . $e->getMessage() . "</fg=red>\n");
+                    $output->writeln(
+                        "\n<fg=red>Erro na execução: " .
+                            $e->getMessage() .
+                        "</fg=red>\n"
+                    );
                 }
 
                 $helper = $this->getHelper('question');
-                $confirmQuestion = new ConfirmationQuestion('Deseja selecionar outra rotina? [Y/n]: ', true);
+                $confirmQuestion = new ConfirmationQuestion(
+                    'Deseja selecionar outra rotina? [Y/n]: ',
+                    true
+                );
                 if (!$helper->ask($input, $output, $confirmQuestion)) {
                     break;
                 }
@@ -253,14 +309,18 @@ class CronListCommand extends ZendCommand
     /**
      * Varre um diretório recursivamente buscando arquivos PHP.
      *
-     * @param string $dir
+     * @param string $dir Nome diretório
+     *
      * @return array
      */
-    private function scanDirectory(string $dir): array
+    private function _scanDirectory(string $dir): array
     {
         $files = [];
         $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS)
+            new \RecursiveDirectoryIterator(
+                $dir,
+                \RecursiveDirectoryIterator::SKIP_DOTS
+            )
         );
 
         foreach ($iterator as $file) {
@@ -271,5 +331,4 @@ class CronListCommand extends ZendCommand
 
         return $files;
     }
-
 }

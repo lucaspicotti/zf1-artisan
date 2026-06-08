@@ -1,4 +1,15 @@
 <?php
+/**
+ * File containing the MakeModelCommand class.
+ *
+ * PHP version 7.4
+ *
+ * @category Console
+ * @package  App\Console\Commands\Make
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
+ */
 
 namespace App\Console\Commands\Make;
 
@@ -8,6 +19,13 @@ use App\Console\Commands\GeneratorCommand;
  * Class MakeModelCommand
  *
  * Comando console responsável por automatizar a criação de novas Models.
+ *
+ *
+ * @category Console
+ * @package  App\Console\Commands\Make
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
  */
 class MakeModelCommand extends GeneratorCommand
 {
@@ -52,8 +70,8 @@ class MakeModelCommand extends GeneratorCommand
     /**
      * Resolve o nome de classe completo de acordo com o padrão ZF1 para models.
      *
-     * @param string $name
-     * @param string|null $module
+     * @param  string      $name
+     * @param  string|null $module
      * @return string
      */
     protected function getClassName(string $name, ?string $module): string

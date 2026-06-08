@@ -1,4 +1,15 @@
 <?php
+/**
+ * File containing the ResourceInputParser class.
+ *
+ * PHP version 7.4
+ *
+ * @category Console
+ * @package  App\Console\Support
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
+ */
 
 namespace App\Console\Support;
 
@@ -8,6 +19,13 @@ use InvalidArgumentException;
  * Class ResourceInputParser
  *
  * Responsável por analisar, sanitizar e validar os inputs de nome de recurso gerados pelo console.
+ *
+ *
+ * @category Console
+ * @package  App\Console\Support
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
  */
 class ResourceInputParser
 {
@@ -16,7 +34,7 @@ class ResourceInputParser
      *
      * Suporta os formatos "modulo/NomeRecurso" e "NomeRecurso".
      *
-     * @param string $rawInput Entrada bruta vinda do console.
+     * @param  string $rawInput Entrada bruta vinda do console.
      * @return ParsedResource
      * @throws InvalidArgumentException Se os valores forem inválidos após a sanitização.
      */
@@ -60,7 +78,7 @@ class ResourceInputParser
     /**
      * Remove caracteres indesejados
      *
-     * @param string $value
+     * @param  string $value
      * @return string
      */
     private function sanitize(string $value): string

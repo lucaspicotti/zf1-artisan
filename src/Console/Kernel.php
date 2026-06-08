@@ -1,4 +1,15 @@
 <?php
+/**
+ * File containing the Kernel class.
+ *
+ * PHP version 7.4
+ *
+ * @category Console
+ * @package  App\Console
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
+ */
 
 namespace App\Console;
 
@@ -8,6 +19,16 @@ use RecursiveIteratorIterator;
 use RegexIterator;
 use ReflectionClass;
 
+/**
+ * Class Kernel
+ *
+ *
+ * @category Console
+ * @package  App\Console
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
+ */
 class Kernel
 {
     /**

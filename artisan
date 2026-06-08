@@ -1,6 +1,12 @@
 #!/usr/bin/env php
 <?php
 
+/**
+ * Artisan ZF1 - Script de Entrada da CLI
+ *
+ * Este script inicializa o autoloader do Composer e executa o kernel da aplicação console.
+ */
+
 use App\Console\Kernel;
 
 // Carrega o autoload do Composer

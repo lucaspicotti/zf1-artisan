@@ -1,4 +1,15 @@
 <?php
+/**
+ * File containing the ParsedResource class.
+ *
+ * PHP version 7.4
+ *
+ * @category Console
+ * @package  App\Console\Support
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
+ */
 
 namespace App\Console\Support;
 
@@ -6,6 +17,13 @@ namespace App\Console\Support;
  * Class ParsedResource
  *
  * Representa os detalhes processados e higienizados de um recurso gerado.
+ *
+ *
+ * @category Console
+ * @package  App\Console\Support
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
  */
 class ParsedResource
 {
@@ -15,7 +33,8 @@ class ParsedResource
     /**
      * ParsedResource constructor.
      *
-     * @param string $name Nome do recurso (sem o prefixo do módulo).
+     * @param string      $name   Nome do recurso (sem o prefixo do
+     *                            módulo).
      * @param string|null $module Módulo correspondente em caixa baixa.
      */
     public function __construct(string $name, ?string $module = null)

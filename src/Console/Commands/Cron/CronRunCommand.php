@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * File containing the CronRunCommand class.
+ *
+ * PHP version 7.4
+ *
+ * @category Console
+ * @package  App\Console\Commands\Cron
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
+ */
+
 namespace App\Console\Commands\Cron;
 
 use App\Console\Commands\ZendCommand;
@@ -9,15 +21,31 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
+/**
+ * Class CronRunCommand
+ *
+ * @category Console
+ * @package  App\Console\Commands\Cron
+ * @author   lucaspicotti <lucaspicotti@gmail.com>
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://github.com/lucaspicotti/zf1-artisan
+ */
 class CronRunCommand extends ZendCommand
 {
     protected static $defaultName = 'cron:run';
 
+    /**
+     * Configura as opções e argumentos do comando de execução de cron.
+     *
+     * @return void
+     */
     protected function configure(): void
     {
         parent::configure();
         $this
-            ->setDescription('Executa uma rotina de cron específica no Zend Framework 1')
+            ->setDescription(
+                'Executa uma rotina de cron específica no Zend Framework 1'
+            )
             ->addArgument(
                 'rotina',
                 InputArgument::REQUIRED,
@@ -43,68 +71,105 @@ class CronRunCommand extends ZendCommand
             );
     }
 
+    /**
+     * Executa o comando de console.
+     *
+     * @param InputInterface  $input  A entrada de console.
+     * @param OutputInterface $output A saída de console.
+     *
+     * @return int O código de status da execução.
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
             $this->bootstrapZend($input);
         } catch (\Throwable $e) {
-            $output->writeln("<fg=red>Erro no bootstrap do Zend Framework: " . $e->getMessage() . "</fg=red>");
+            $output->writeln(
+                "<fg=red>Erro no bootstrap do Zend Framework: " .
+                    $e->getMessage() .
+                "</fg=red>"
+            );
             if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                $output->writeln("<comment>" . $e->getTraceAsString() . "</comment>");
+                $output->writeln(
+                    "<comment>" .
+                        $e->getTraceAsString() .
+                    "</comment>"
+                );
             }
             return self::FAILURE;
         }
 
         try {
-            $instancia = $this->resolveInstance($input);
+            $instancia = $this->_resolveInstance($input);
         } catch (\Throwable $e) {
             $output->writeln("<fg=red>" . $e->getMessage() . "</fg=red>");
             if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                $output->writeln("<comment>" . $e->getTraceAsString() . "</comment>");
+                $output->writeln(
+                    "<comment>" .
+                        $e->getTraceAsString() .
+                    "</comment>"
+                );
             }
             return self::FAILURE;
         }
 
-        return $this->executeInstance($input, $output, $instancia);
+        return $this->_executeInstance($input, $output, $instancia);
     }
 
     /**
      * Resolve o arquivo físico e retorna a instância correta da classe.
+     *
+     * @param InputInterface $input A entrada de console para extrair parâmetros.
+     *
+     * @return object A instância da classe resolvida.
+     *
+     * @throws \RuntimeException
      */
-    private function resolveInstance(InputInterface $input): object
+    private function _resolveInstance(InputInterface $input): object
     {
         $basePath = $input->getOption('path') ?? $_ENV['APPLICATION_PATH'] ?? null;
         if (!$basePath) {
-            throw new \RuntimeException("Erro: A variável de ambiente APPLICATION_PATH não foi definida nem via opção --path.");
+            throw new \RuntimeException(
+                "Erro: A variável de ambiente APPLICATION_PATH " .
+                "não foi definida nem via opção --path."
+            );
         }
 
         $cronDir = rtrim($basePath, '/') . '/cron';
         $rotina = $input->getArgument('rotina');
-        
+
         $realCronDir = realpath($cronDir);
         $filePath = realpath($cronDir . '/' . $rotina . '.php');
-        
+
         if (!$realCronDir || !$filePath || strpos($filePath, $realCronDir) !== 0) {
-            throw new \RuntimeException("Erro: Caminho da rotina inválido ou arquivo não encontrado.");
+            throw new \RuntimeException(
+                "Erro: Caminho da rotina inválido ou arquivo não encontrado."
+            );
         }
 
         $className = $this->getClassNameFromFile($filePath);
         if (!$className) {
-            throw new \RuntimeException("Erro: Nenhuma classe correspondente encontrada no arquivo.");
-        }
-
-        // Tenta verificar se a classe já está na memória sem disparar o autoloader (evitando warnings); se não estiver, faz require_once
-        if (!class_exists($className, false)) {
-            require_once $filePath;
+            throw new \RuntimeException(
+                "Erro: Nenhuma classe correspondente encontrada no arquivo."
+            );
         }
 
         if (!class_exists($className, false)) {
-            throw new \RuntimeException("Erro: Classe '{$className}' não encontrada no arquivo.");
+            include_once $filePath;
+        }
+
+        if (!class_exists($className, false)) {
+            throw new \RuntimeException(
+                "Erro: Classe '{$className}' não encontrada no arquivo."
+            );
         }
 
         $reflection = new \ReflectionClass($className);
         if ($reflection->isAbstract() || $reflection->isInterface()) {
-            throw new \RuntimeException("Erro: A classe '{$className}' é abstrata ou interface e não pode ser executada.");
+            throw new \RuntimeException(
+                "Erro: A classe '{$className}' " .
+                " é abstrata ou interface e não pode ser executada."
+            );
         }
 
         return new $className();
@@ -112,9 +177,18 @@ class CronRunCommand extends ZendCommand
 
     /**
      * Gerencia a execução da rotina utilizando a estratégia (Executor) compatível.
+     *
+     * @param InputInterface  $input     A entrada de console.
+     * @param OutputInterface $output    A saída de console.
+     * @param object          $instancia A instância da cron.
+     *
+     * @return int O código de status de retorno.
      */
-    private function executeInstance(InputInterface $input, OutputInterface $output, object $instancia): int
-    {
+    private function _executeInstance(
+        InputInterface $input,
+        OutputInterface $output,
+        object $instancia
+    ): int {
         $executors = [
             new Executors\StandardCronExecutor(),
             new Executors\OperatorCronExecutor(),
@@ -127,26 +201,46 @@ class CronRunCommand extends ZendCommand
         foreach ($executors as $executor) {
             if ($executor->supports($instancia)) {
                 try {
-                    $statusCode = $executor->execute($input, $output, $instancia, $this);
-                    
+                    $statusCode = $executor->execute(
+                        $input,
+                        $output,
+                        $instancia,
+                        $this
+                    );
+
                     if ($statusCode === self::SUCCESS) {
                         $elapsedTime = round(microtime(true) - $startTime, 2);
-                        $output->writeln("<info>Rotina executada com sucesso em {$elapsedTime} segundos.</info>");
+                        $output->writeln(
+                            "<info> Rotina executada com sucesso: " .
+                            " {$elapsedTime} segundos. </info>"
+                        );
                     }
-                    
+
                     return $statusCode;
                 } catch (\Throwable $e) {
-                    $output->writeln("<fg=red>Erro durante a execução da rotina: " . $e->getMessage() . "</fg=red>");
+                    $output->writeln(
+                        "<fg=red>Erro durante a execução da rotina: " .
+                            $e->getMessage() .
+                        "</fg=red>"
+                    );
+
                     if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                        $output->writeln("<comment>" . $e->getTraceAsString() . "</comment>");
+                        $output->writeln(
+                            "<comment>" .
+                                $e->getTraceAsString() .
+                            "</comment>"
+                        );
                     }
                     return self::FAILURE;
                 }
             }
         }
 
-        $output->writeln("<fg=red>Erro: Tipo de classe de cron desconhecido ou não suportado.</fg=red>");
+        $output->writeln(
+            "<fg=red>Erro: " .
+                "Tipo de classe de cron desconhecido ou não suportado." .
+            "</fg=red>"
+        );
         return self::FAILURE;
     }
 }
-
