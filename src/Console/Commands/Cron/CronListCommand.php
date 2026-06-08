@@ -47,8 +47,8 @@ class CronListCommand extends ZendCommand
         try {
             $this->bootstrapZend($input);
         } catch (\Throwable $e) {
-            $output->writeln("<error>Erro: Não foi possível inicializar o Zend Framework para listar as crons.</error>");
-            $output->writeln("<error>Detalhes: " . $e->getMessage() . "</error>");
+            $output->writeln("<fg=red>Erro: Não foi possível inicializar o Zend Framework para listar as crons.</fg=red>");
+            $output->writeln("<fg=red>Detalhes: " . $e->getMessage() . "</fg=red>");
             if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
                 $output->writeln("<comment>" . $e->getTraceAsString() . "</comment>\n");
             }
@@ -58,14 +58,14 @@ class CronListCommand extends ZendCommand
         $basePath = $input->getOption('path') ?? $_ENV['APPLICATION_PATH'] ?? null;
         if (!$basePath) {
             $output->writeln(
-                "<error>Erro: A variável de ambiente APPLICATION_PATH não foi definida nem via opção --path.</error>"
+                "<fg=red>Erro: A variável de ambiente APPLICATION_PATH não foi definida nem via opção --path.</fg=red>"
             );
             return self::FAILURE;
         }
 
         $cronDir = rtrim($basePath, '/') . '/cron';
         if (!is_dir($cronDir)) {
-            $output->writeln("<error>Diretório de crons não encontrado em: {$cronDir}</error>");
+            $output->writeln("<fg=red>Diretório de crons não encontrado em: {$cronDir}</fg=red>");
             return self::FAILURE;
         }
 
@@ -233,7 +233,7 @@ class CronListCommand extends ZendCommand
                     $returnCode = $command->run($runInput, $output);
                     $output->writeln("");
                 } catch (\Throwable $e) {
-                    $output->writeln("\n<error>Erro na execução: " . $e->getMessage() . "</error>\n");
+                    $output->writeln("\n<fg=red>Erro na execução: " . $e->getMessage() . "</fg=red>\n");
                 }
 
                 $helper = $this->getHelper('question');

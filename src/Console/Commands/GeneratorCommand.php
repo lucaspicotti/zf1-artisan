@@ -63,7 +63,7 @@ abstract class GeneratorCommand extends Command
             $parser = new ResourceInputParser();
             $resource = $parser->parse($rawName);
         } catch (\InvalidArgumentException $exception) {
-            $output->writeln("<error>Erro de validação: {$exception->getMessage()}</error>");
+            $output->writeln("<fg=red>Erro de validação: {$exception->getMessage()}</fg=red>");
             return Command::FAILURE;
         }
 
@@ -73,7 +73,7 @@ abstract class GeneratorCommand extends Command
         $basePath = $input->getOption('path') ?? $_ENV['APPLICATION_PATH'] ?? null;
         if (!$basePath) {
             $output->writeln(
-                "<error>Erro: A variável APPLICATION_PATH não foi definida no ambiente nem via opção --path.</error>"
+                "<fg=red>Erro: A variável APPLICATION_PATH não foi definida no ambiente nem via opção --path.</fg=red>"
             );
             return Command::FAILURE;
         }
@@ -83,14 +83,14 @@ abstract class GeneratorCommand extends Command
         $className = $targetDetails['class_name'];
 
         if ($this->filesystem->exists($destinationPath) && !$force) {
-            $output->writeln("<error>Erro: {$className} já existe em: {$destinationPath}</error>");
+            $output->writeln("<fg=red>Erro: {$className} já existe em: {$destinationPath}</fg=red>");
             $output->writeln("<comment>Use a opção --force (-f) para sobrescrever.</comment>");
             return Command::FAILURE;
         }
 
         $stubPath = $this->getStubPath();
         if (!file_exists($stubPath)) {
-            $output->writeln("<error>Erro: Stub de template não encontrado em: {$stubPath}</error>");
+            $output->writeln("<fg=red>Erro: Stub de template não encontrado em: {$stubPath}</fg=red>");
             return Command::FAILURE;
         }
 
@@ -103,7 +103,7 @@ abstract class GeneratorCommand extends Command
             $output->writeln("<info>{$className} criado com sucesso em: {$destinationPath}</info>");
             return Command::SUCCESS;
         } catch (IOExceptionInterface $exception) {
-            $output->writeln("<error>Erro ao criar o arquivo: {$exception->getMessage()}</error>");
+            $output->writeln("<fg=red>Erro ao criar o arquivo: {$exception->getMessage()}</fg=red>");
             return Command::FAILURE;
         }
     }

@@ -41,7 +41,7 @@ class DebugBootstrapCommand extends ZendCommand
         // 1. Validar caminho base
         $output->write("1. Verificando APPLICATION_PATH... ");
         if (!$basePath) {
-            $output->writeln("<error>FALHA</error>");
+            $output->writeln("<fg=red>FALHA</fg=red>");
             $output->writeln("<comment>A variável de ambiente APPLICATION_PATH não está definida no .env nem via opção --path.</comment>");
             return self::FAILURE;
         }
@@ -66,21 +66,21 @@ class DebugBootstrapCommand extends ZendCommand
         // 2. Validar arquivos requeridos
         $output->write("2. Verificando BootstrapCron.php... ");
         if (!file_exists($bootstrapCronPath)) {
-            $output->writeln("<error>FALHA</error> (Não encontrado em {$bootstrapCronPath})");
+            $output->writeln("<fg=red>FALHA</fg=red> (Não encontrado em {$bootstrapCronPath})");
             return self::FAILURE;
         }
         $output->writeln("<info>OK</info>");
 
         $output->write("3. Verificando Bootstrap.php... ");
         if (!file_exists($bootstrapPath)) {
-            $output->writeln("<error>FALHA</error> (Não encontrado em {$bootstrapPath})");
+            $output->writeln("<fg=red>FALHA</fg=red> (Não encontrado em {$bootstrapPath})");
             return self::FAILURE;
         }
         $output->writeln("<info>OK</info>");
 
         $output->write("4. Verificando config.ini... ");
         if (!file_exists($configIniPath)) {
-            $output->writeln("<error>FALHA</error> (Não encontrado em {$configIniPath})");
+            $output->writeln("<fg=red>FALHA</fg=red> (Não encontrado em {$configIniPath})");
             return self::FAILURE;
         }
         $output->writeln("<info>OK</info>");
@@ -103,7 +103,7 @@ class DebugBootstrapCommand extends ZendCommand
 
         $zendPath = stream_resolve_include_path('Zend/Application.php');
         if (!$zendPath) {
-            $output->writeln("<error>FALHA</error>");
+            $output->writeln("<fg=red>FALHA</fg=red>");
             $output->writeln("<comment>Zend/Application.php não foi localizado no include_path.</comment>");
             $output->writeln("Include path atual: " . get_include_path());
             return self::FAILURE;
@@ -133,8 +133,8 @@ class DebugBootstrapCommand extends ZendCommand
             $zendApplication->bootstrap();
             $output->writeln("<info>OK</info> (Bootstrap executado com sucesso)");
         } catch (\Throwable $e) {
-            $output->writeln("<error>FALHA</error>");
-            $output->writeln("<error>Erro na inicialização: " . $e->getMessage() . "</error>");
+            $output->writeln("<fg=red>FALHA</fg=red>");
+            $output->writeln("<fg=red>Erro na inicialização: " . $e->getMessage() . "</fg=red>");
             $output->writeln("<comment>" . $e->getTraceAsString() . "</comment>");
             return self::FAILURE;
         }
@@ -153,8 +153,8 @@ class DebugBootstrapCommand extends ZendCommand
                 $output->writeln("<comment>Nenhum dbAdapter registrado no contêiner.</comment>");
             }
         } catch (\Throwable $e) {
-            $output->writeln("<error>FALHA</error>");
-            $output->writeln("<error>Erro na conexão com banco: " . $e->getMessage() . "</error>");
+            $output->writeln("<fg=red>FALHA</fg=red>");
+            $output->writeln("<fg=red>Erro na conexão com banco: " . $e->getMessage() . "</fg=red>");
         }
 
         // 6. Validar Cache
@@ -167,8 +167,8 @@ class DebugBootstrapCommand extends ZendCommand
                 $output->writeln("<comment>Nenhum cache registrado no Zend_Registry.</comment>");
             }
         } catch (\Throwable $e) {
-            $output->writeln("<error>FALHA</error>");
-            $output->writeln("<error>Erro ao verificar cache: " . $e->getMessage() . "</error>");
+            $output->writeln("<fg=red>FALHA</fg=red>");
+            $output->writeln("<fg=red>Erro ao verificar cache: " . $e->getMessage() . "</fg=red>");
         }
 
         // 7. Verificar Xdebug para debug CLI
