@@ -42,7 +42,7 @@ class DebugBootstrapCommand extends ZendCommand
         $output->write("1. Verificando APPLICATION_PATH... ");
         if (!$basePath) {
             $output->writeln("<fg=red>FALHA</fg=red>");
-            $output->writeln("<comment>A variável de ambiente APPLICATION_PATH não está definida no .env nem via opção --path.</comment>");
+            $output->writeln("<comment>A variável de ambiente APPLICATION_PATH não está definida nem via opção --path.</comment>");
             return self::FAILURE;
         }
         $output->writeln("<info>OK</info> ({$basePath})");

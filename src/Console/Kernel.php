@@ -3,7 +3,6 @@
 namespace App\Console;
 
 use Symfony\Component\Console\Application;
-use Symfony\Component\Dotenv\Dotenv;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RegexIterator;
@@ -27,28 +26,20 @@ class Kernel
     }
 
     /**
-     * Configura o ambiente (.env e caminhos).
+     * Configura o ambiente (caminhos padrão).
      *
      * @return void
      */
     protected function bootstrapEnvironment(): void
     {
-        $dotenv = new Dotenv();
-
-        $localEnv = dirname(__DIR__, 2) . '/.env';
-        if (file_exists($localEnv)) {
-            $dotenv->load($localEnv);
-        }
-
-        $parentEnv = dirname(__DIR__, 5) . '/.env';
-        if (file_exists($parentEnv)) {
-            $dotenv->load($parentEnv);
-        }
-
-        if (empty($_ENV['APPLICATION_PATH'])) {
+        $appPath = $_ENV['APPLICATION_PATH'] ?? $_SERVER['APPLICATION_PATH'] ?? getenv('APPLICATION_PATH');
+        
+        if (empty($appPath)) {
             $parentAppPath = dirname(__DIR__, 5) . '/application/';
             if (is_dir($parentAppPath)) {
                 $_ENV['APPLICATION_PATH'] = $parentAppPath;
+                $_SERVER['APPLICATION_PATH'] = $parentAppPath;
+                putenv("APPLICATION_PATH={$parentAppPath}");
             }
         }
     }
